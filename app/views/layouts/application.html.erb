@@ -1,0 +1,50 @@
+<!--整个网站的view模板-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!--暂时命名-->
+  <title>电商平台</title>
+  <!--兼容移动端配置的meta标签(响应式布局，看起来别太丑)，最后一个不允许用户缩放页面-->
+  <meta name="viewport" content="width=device-width,initial-scale=1,
+     maximum-scale=1, user-scalable=no">
+  <!--插入CSRF（Cross-Site Request Forgery）保护的元标签，这是一个安全措施，防止跨站请求伪造攻击。-->
+  <%= csrf_meta_tags %>
+  <!--插入内容安全策略（Content Security Policy）的元标签，这是一个安全措施，限制浏览器加载哪些资源。-->
+  <%= csp_meta_tag %>
+  <!--引用名为“application”的CSS样式表，并设置data-turbo-track属性为“reload”，这可能是用于TurboLinks或Turbolinks的一个设置，用于改进页面加载和渲染速度。-->
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <!--命名模板，方便在不同页面引入独立css代码块-->
+  <%=yield :stylesheets %>
+</head>
+
+<body>
+<!--顶部导航菜单，放在独立的模板menu中-->
+<%=render 'layouts/menu' %>
+<!--主内容模板,container是CSS类，通常在Bootstrap等框架中用于创建响应式的固定宽度容器-->
+<div class="container">
+  <!--输出不为空的提示信息，采用bootstrap提供的默认样式alert-info-->
+
+  <% if flash[:error] %>
+    <div class="alert alert-danger"><%= flash[:error] %></div>
+  <% elsif flash[:warning] %>
+    <div class="alert alert-warning"><%= flash[:warning] %></div>
+  <% elsif flash[:notice] %>
+    <div class="alert alert-info"><%= flash[:notice] %></div>
+  <% elsif flash[:success] %>
+    <div class="alert alert-success"><%= flash[:success] %></div>
+  <% elsif flash[:alert] %>
+    <div class="alert alert-warning"><%= flash[:alert] %></div>
+  <% end %>
+
+  <%# unless flash[:notice].blank? %>
+<!--    <div class="alert alert-info"><%#= flash[:notice] %></div>-->
+  <%# end -%>
+  <!--插入当前页面模板的内容-->
+  <%=yield %>
+</div>
+
+<!--引入网站的application.js文件，插入在页面模板中定义的额外的JavaScript文件或代码块，网站加载和渲染速度更好-->
+<%= javascript_include_tag 'application' %>
+<%= yield :javascripts%>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!--开始一个<nav>元素，该元素通常用于包含一组导航链接。它具有两个类，navbar和navbar-default，
+分别来自Bootstrap CSS框架，用于提供默认的Bootstrap导航栏样式。-->
+<nav class="navbar navbar-default">
+  <!--  开始一个<div>元素，它具有一个类container。这个类来自Bootstrap，用于创建一个响应式的固定宽度容器。-->
+  <div class="container">
+    <!--    将品牌和切换按钮组合在一起以改善移动设备的显示-->
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <!--    开始一个<div>元素，它具有一个类navbar-header。这个类来自Bootstrap，用于在导航栏中包含品牌和切换按钮。-->
+    <div class="navbar-header">
+      <!--开始一个<button>元素，它是一个切换按钮，用于在移动设备上显示和隐藏导航菜单-->
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <!--接下来的四个<span>元素是按钮的导航图标，它们一起表示一个下拉箭头。-->
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <!--开始一个<a>元素，它具有一个类navbar-brand，用于在导航栏中包含品牌名称。它的href属性指向<%#= root_path %>，
+这通常是一个占位符，代表当前应用的根路径。这个链接通常用于将用户引导到应用的主要页面。-->
+      <a class="navbar-brand" href="<%= root_path %>">电商平台</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="<%= root_path %>">Home <span class="sr-only">(current)</span></a></li>
+<!--        这里的分类不需要了-->
+<!--        <li><a href="#">分类</a></li>-->
+      </ul>
+      <form class="navbar-form navbar-left">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="商品名称..">
+        </div>
+        <button type="submit" class="btn btn-default">搜索</button>
+      </form>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+        <ul class="nav navbar-nav navbar-right">
+<!--          输出当前购物车的数量-->
+          <li><%= link_to "购物车(#{@shopping_cart_count})", shopping_carts_path %></li>
+          <% unless current_user %>
+            <li><a href="<%= new_user_registration_path %>">注册</a></li>
+            <li><a href="<%= new_user_session_path %>">登录</a></li>
+          <% else %>
+            <li><a href="#"><%= current_user.email.split('@').first %> 欢迎您</a> </li>
+            <li>
+              <div class="button-container">
+                <%= button_to "登出", destroy_user_session_path, method: :delete, class: "btn btn-secondary auto",
+                              style: "display: flex; justify-content: center;" %>
+              </div>
+            </li>
+          <% end -%>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人中心 <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">我的订单</a></li>
+              <li><a href="#">我的收获地址</a></li>
+              <li><a href="#">我的收藏</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#">个人信息</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>

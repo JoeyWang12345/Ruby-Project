@@ -1,0 +1,55 @@
+<h1>注册</h1>
+
+<!--检查用户对象(@user)的错误集合是否为空。如果错误集合不为空，则执行下面的代码块。-->
+<% unless @user.errors.empty? %>
+  <!--定义一个警告消息的容器，如果用户注册信息有错误，这个容器会包含这些错误信息。-->
+  <div class="alert alert-danger">
+    <!--无序列表，包含错误消息 un...list-->
+    <ul>
+      <!--遍历用户对象的错误集合，将错误消息扁平化，对每个错误消息执行下面代码块-->
+      <% @user.errors.messages.values.flatten.each do |error| %>
+        <!--    在无序列表中创建一个包含错误消息的列表项。list item-->
+        <li><%= error %></li>
+        <!--    结束循环-->
+      <% end -%>
+    </ul>
+  </div>
+<% end -%>
+
+
+<!--定义一个表单用于收集用户的注册信息，目标URL是users_path(指向处理用户注册的控制器，即users_controller.rb)
+使用post方法提交数据，并设置其HTML类为form-horizontal和ID为user_form
+该表单使用form_for方法生成，该方法将渲染表单元素并将其数据绑定到一个User对象(命名为f)-->
+<%= form_for :user, url: user_registration_path, method: :post, html: { class: 'form-horizontal', id: "user_form"} do |f| %>
+  <!--定义了四个表单字段：邮箱、密码、密码确认以及一个提交按钮，它们都使用form_for方法中的f参数进行渲染
+  这意味着这些字段的值将被绑定到User对象-->
+  <!--定义一个表单组的容器，并定义一个标签，显示“邮箱 *”，*表明这是一个必填字段-->
+  <div class="form-group">
+    <div class="col-lg-12">邮箱 *</div>
+    <!--在表单组中定义一个文本输入字段的容器-->
+    <div class="col-lg-12">
+      <!--使用f参数渲染一个文本输入字段，用于收集用户的电子邮件地址，
+      这个字段被赋予一个CSS类"form-control"，这是Bootstrap框架的一部分，用于样式化输入字段-->
+      <%= f.text_field :email, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-lg-12">密码 *</div>
+    <div class="col-lg-12">
+      <%= f.password_field :password, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-lg-12">密码确认 *</div>
+    <div class="col-lg-12">
+      <%= f.password_field :password_confirmation, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-lg-12">
+      <!--定义了一个提交按钮。这个按钮的类型是"submit"，意味着当用户点击这个按钮时，
+      表单将被提交到目标URL(即users_path)，按钮的文本是"创建账户"-->
+      <input type="submit" name="create_user_submit" value="创建账户" class="col-xs-12 btn btn-primary">
+    </div>
+  </div>
+<% end -%>
