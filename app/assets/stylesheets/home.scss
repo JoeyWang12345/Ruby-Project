@@ -1,0 +1,39 @@
+.list-group-item a {
+    display: block;
+}
+.msrp {
+  //所有拥有msrp类的元素均设置为带有线条穿过，表示不再有效，在市场建议零售价处使用
+  text-decoration: line-through;
+}
+.thumbnail {
+  height: 120px;
+  &.detail {
+    height: auto;
+  }
+  a.title {
+    color: #333;
+  }
+}
+
+.media {
+  &.shopping-cart-row {
+    border-bottom: 1px solid #ccc;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+}
+
+//为所有拥有add-to-cart-btn类的元素的子元素i设置样式，将i标签设为隐藏
+a.add-to-cart-btn {
+  i {
+    display: none;
+  }
+}
+
+@media (min-width: 1200px) {
+  .navbar-form .form-control.search-input {
+    width: 400px
+  }
+}

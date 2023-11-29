@@ -1,0 +1,12 @@
+<div class="row">
+<!--分为左右两部分，左边输出分类，右边输出面包屑和商品-->
+  <div class="col-lg-3">
+    <%= render 'shared/categories' %>
+  </div>
+  <div class="col-lg-9">
+    <ol class="breadcrumb">
+      <li class="active">Home</li>
+    </ol>
+    <%= render 'shared/products' %>
+  </div>
+</div>

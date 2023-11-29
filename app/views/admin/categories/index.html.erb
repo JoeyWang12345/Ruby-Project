@@ -1,0 +1,45 @@
+<div>
+  <div class="pull-right">
+    <!--输出新建分类的链接，这在页面里显示出来是一个蓝色的按钮-->
+    <%= link_to "新建分类", new_admin_category_path, class: "btn btn-primary" %>
+  </div>
+
+  <h1>
+    <!--先判断，如果有一个一级分类@category，就列出他的名称和其拥有的二级分类，否则仅一级分类-->
+    <% if @category %>
+      分类:<%= @category.title %>(<%= @categories.total_entries %>)
+    <% else %>
+      分类(<%= @categories.total_entries %>)
+    <% end -%>
+  </h1>
+</div>
+
+<div>
+  <table class="table table-striped">
+    <tr>
+      <th>ID</th>
+      <th>名称</th>
+      <th>Weight</th>
+      <th></th>
+    </tr>
+
+    <% @categories.each do |category| %>
+      <tr>
+        <td><%= category.id %></td>
+        <td><%= category.title %></td>
+        <td><%= category.weight %></td>
+        <td align="right">
+          <!--点击编辑，删除等可以跳转到对应位置-->
+          <%= link_to "编辑", edit_admin_category_path(category) %>
+          <%= link_to "删除", admin_category_path(category), method: :delete, 'data-confirm': "确认删除吗?" %>
+          <%#= link_to "删除", admin_category_path(category), turbo_method: :delete, turbo_confirm: "确认删除吗?" %>
+          <% if category.root? %>
+            <%= link_to "查看子分类", admin_categories_path(id: category) %>
+          <% end -%>
+        </td>
+      </tr>
+    <% end -%>
+  </table>
+
+  <%= will_paginate @categories %>
+</div>

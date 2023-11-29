@@ -1,0 +1,74 @@
+<h1>确认订单</h1>
+<div class="row">
+<!--  容器使得内容适应不同屏幕大小-->
+  <div class="container">
+<!--    页面标题-->
+    <div class="page-header">
+<!--      显示收货地址，前面有一个font awesome图标-->
+      <h4><i class="fa fa-map-marker"></i> 收货地址</h4>
+    </div>
+    <div id="address_list">
+
+
+    </div>
+
+
+    <div class="page-header">
+      <h4><i class="fa fa-credit-card"></i> 支付方式</h4>
+    </div>
+    <ul class="list-group">
+      <li class="list-group-item">
+<!--        只有一种支付方式-->
+        <input type="radio" name="payment_method" value="alipay" checked />
+<!--        不知道图片放这行不行-->
+        <%= image_tag "alipay.png", width: 100 %>
+      </li>
+    </ul>
+
+    <div class="page-header">
+      <h4><i class="fa fa-list-alt"></i> 商品列表</h4>
+    </div>
+    <% @shopping_carts.each do |shopping_cart| %>
+      <div class="media shopping-cart-row">
+        <div class="media-left">
+<!--          商品的图片估计不行-->
+          <%#= image_tag shopping_cart.product.main_product_image.image.url(:small), class: 'media-object', alt: shopping_cart.product.title %>
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading"><%= shopping_cart.product.title %></h4>
+          数量: <%= shopping_cart.amount %> 价格: ¥<%= shopping_cart.amount * shopping_cart.product.price %>
+        </div>
+      </div>
+    <% end -%>
+
+    <br />
+    <div class="pull-right">
+      <!--创建订单，输出购物车中商品总价格-->
+      <!--通过js监视送货地址id，并传递到后台create中，订单的数据来源为shopping_carts-->
+      <%= form_tag orders_path, method: :post, class: "create-order-form" do %>
+        <input type="hidden" name="address_id" />
+        <strong>总价: ¥<%= @shopping_carts.sum { |cart| cart.amount * cart.product.price } %></strong>
+        <input type="submit" value="确认订单" class="btn btn-danger btn-lg" />
+      <% end %>
+    </div>
+
+    <div class="clearfix"></div>
+    <br />
+    <br />
+    <br />
+    <br />
+  </div>
+</div>
+
+<!--发起异步请求，向AddressesController的index发送请求，获取地址列表-->
+<%= content_for :javascripts do %>
+  <script>
+      // 发起一个GET请求到“/addresses”路径，当请求成功完成时，
+      // 执行回调函数。这个回调函数会接收到服务器返回的数据。
+      $.get('/addresses', function(data) {
+          // 使用jQuery选择器来选择id为“address_list”的元素，
+          // 并使用服务器返回的数据（data）填充其HTML内容。
+          $('#address_list').html(data);
+      })
+  </script>
+<% end %>
